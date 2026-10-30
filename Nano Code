@@ -1,0 +1,47 @@
+// AEGISBEAM - Arduino Nano
+// Receives alert signals from Arduino Uno
+
+const int ZONE1_INPUT = 4;  // Uno D8 -> Nano D4
+const int ZONE2_INPUT = 6;  // Uno D7 -> Nano D6
+const int ZONE3_INPUT = 7;  // Uno D5 -> Nano D7
+
+const int LED_ZONE1 = 2;
+const int LED_ZONE2 = 3;    // Red LED
+const int LED_ZONE3 = 5;
+
+void setup() {
+  pinMode(ZONE1_INPUT, INPUT);
+  pinMode(ZONE2_INPUT, INPUT);
+  pinMode(ZONE3_INPUT, INPUT);
+
+  pinMode(LED_ZONE1, OUTPUT);
+  pinMode(LED_ZONE2, OUTPUT);
+  pinMode(LED_ZONE3, OUTPUT);
+
+  digitalWrite(LED_ZONE1, LOW);
+  digitalWrite(LED_ZONE2, LOW);
+  digitalWrite(LED_ZONE3, LOW);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  bool alert1 = digitalRead(ZONE1_INPUT) == HIGH;
+  bool alert2 = digitalRead(ZONE2_INPUT) == HIGH;
+  bool alert3 = digitalRead(ZONE3_INPUT) == HIGH;
+
+  digitalWrite(LED_ZONE1, alert1 ? HIGH : LOW);
+  digitalWrite(LED_ZONE2, alert2 ? HIGH : LOW);
+  digitalWrite(LED_ZONE3, alert3 ? HIGH : LOW);
+
+  Serial.print("Zone 1: ");
+  Serial.print(alert1 ? "ALERT" : "SAFE");
+
+  Serial.print(" | Zone 2: ");
+  Serial.print(alert2 ? "ALERT" : "SAFE");
+
+  Serial.print(" | Zone 3: ");
+  Serial.println(alert3 ? "ALERT" : "SAFE");
+
+  delay(200);
+}
